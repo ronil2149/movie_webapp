@@ -221,11 +221,11 @@ app.get('/', (req, res) => {
     res.render('home', { title: 'Welcome to the Movie App' });
 });
 
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+app.use((req, res, next) => {
+    console.log(`Request received: ${req.method} ${req.url}`);
+    next();
 });
+
 
 app.get('*', (req, res) => {
     console.log(`Received request: ${req.method} ${req.url}`);
