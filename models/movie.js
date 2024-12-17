@@ -14,23 +14,23 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-MovieSchema = new Schema({
-    Movie_ID: { type: Number, required: true, unique: true },
-    Title: { type: String, required: true },
-    Year: { type: Number },
-    Rated: { type: String },
-    Released: { type: String },
-    Runtime: { type: String },
-    Genre: { type: String },
-    Director: { type: String },
-    Writer: { type: String },
-    Actors: { type: String },
-    Plot: { type: String },
-    imdbRating: { type: Number },
-    BoxOffice: { type: String },
-    Production: { type: String },
-    Language: { type: String },
-    Country: { type: String },
+const movieSchema = new mongoose.Schema({
+    Movie_ID: String,
+    Title: String,
+    Year: Number,
+    Rated: String,
+    Released: String,
+    Runtime: String,
+    Genre: String,
+    Director: String,
+    Writer: String,
+    Actors: String,
+    Plot: String,
+    Poster: String, // Ensure this field is defined
+    imdbRating: Number,
+    BoxOffice: String,
+    Production: String,
+    Language: String,
+    Country: String,
 });
-
-module.exports = mongoose.model('Movie', MovieSchema);
+module.exports = mongoose.model('Movie', movieSchema);

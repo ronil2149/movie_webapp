@@ -34,8 +34,8 @@ footer {
 /* Fixed Image Styling */
 .card-img-top {
     width: 100%; /* Full width of the card */
-    height: 350px; /* Consistent height for all posters */
-    object-fit: fill; /* Ensure full image is displayed without cropping */
+    height: 300px; /* Consistent height for all posters */
+    object-fit: cover; /* Crop to fill the area */
     border-bottom: 2px solid #eaeaea; /* Subtle border under the image */
     background-color: #f0f0f0; /* Neutral background for placeholders */
     padding: 0; /* Remove extra padding to avoid spacing issues */
@@ -43,21 +43,30 @@ footer {
 
 /* Card Content Text Styling */
 .card-body h5 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
 }
 
 .card-body p {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
 }
 
 /* Align Action Buttons in a Row */
 .card-footer .btn {
-    margin: 0 5px;
+    margin: 3px;
     padding: 8px 12px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     display: inline-block;
+}
+
+/* Grid Styling for Movies */
+.row-cols-md-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexible grid */
+    gap: 20px; /* Spacing between cards */
 }
 
 /* Fullscreen Overlay Styling */
@@ -104,62 +113,13 @@ footer {
     cursor: pointer;
 }
 
-/* Blur Effect for Background Cards When Overlay is Active */
+/* Blur Effect for Background Content When Overlay is Active */
 body.blur-active .row {
     filter: blur(5px); /* Blur the background cards */
     pointer-events: none; /* Disable interaction with blurred content */
 }
 
-/* Center Delete Confirmation Dialog */
-.confirm-overlay {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Show the overlay when active */
-input[type="checkbox"]:checked ~ .confirm-overlay {
-    display: flex;
-}
-
-/* Confirmation Box */
-.confirm-box {
-    background: #f8d7da;
-    border: 1px solid #f5c2c7;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    width: 300px;
-}
-
-.confirm-box p {
-    margin-bottom: 15px;
-    color: #842029;
-    font-size: 1rem;
-}
-
-/* Confirmation Buttons */
-.confirm-box .btn {
-    margin: 5px;
-    padding: 10px 15px;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-
-/* Disable interactions on blurred content */
-body.blur {
-    filter: blur(5px);
-    pointer-events: none;
-}
-
+/* Alert Boxes */
 .alert {
     margin: 10px 0;
     padding: 15px;
@@ -179,6 +139,127 @@ body.blur {
     border: 1px solid #f5c6cb;
 }
 
-.alert {
-    margin-top: 20px;
+/* Search Form */
+form[action="/search"] {
+    display: inline-block;
+    margin-left: 10px;
 }
+
+form[action="/search"] input {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 200px; /* Ensure consistent input width */
+}
+
+form[action="/search"] button {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Button Hover Effects */
+.card-footer .btn:hover {
+    filter: brightness(0.9); /* Slight darkening effect on hover */
+}
+
+/* Pagination Styling (Optional for additional features) */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li {
+    margin: 0 5px;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for Error Page */
+.error-container {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.error-container h1 {
+    font-size: 3rem;
+    color: #721c24;
+}
+
+.error-container p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #333;
+}
+
+.error-container a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.error-container a:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Grid Layout */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.col-md-4 {
+    flex: 0 1 calc(33.333% - 20px); /* Three cards per row */
+    margin-bottom: 20px;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Ensure uniform height */
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Consistent Image Size */
+.card img {
+    object-fit: cover;
+    height: 300px;
+    width: 100%;
+}
+
+/* Text Alignment */
+.card-body {
+    text-align: center;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+    

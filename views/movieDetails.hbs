@@ -3,44 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
+    <title>{{movie.Title}} | Movie Details</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header class="bg-dark text-white p-3">
+    <!-- Header -->
+    <header class="bg-dark text-white p-3 shadow-sm">
         <div class="container">
-            <h1 class="text-center">Movie Details</h1>
+            <h1 class="text-center">{{movie.Title}} Details</h1>
         </div>
     </header>
-    <main class="container mt-4">
-        <div class="card">
+
+    <!-- Main Movie Details Section -->
+    <main class="container mt-5">
+        <div class="card mb-3 shadow-lg rounded">
             <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="{{movie.Poster}}" class="img-fluid rounded-start" alt="{{movie.Title}}">
+                <!-- Movie Poster -->
+                <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
+                    <img 
+                        src="{{movie.Poster}}" 
+                        class="img-fluid rounded shadow" 
+                        alt="{{movie.Title}} Poster" 
+                        onerror="this.src='https://via.placeholder.com/300x450?text=No+Image+Available';"
+                        style="max-height: 450px;"
+                    />
                 </div>
+
+                <!-- Movie Info -->
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h2 class="card-title">{{movie.Title}}</h2>
-                        <p><strong>Year:</strong> {{movie.Year}}</p>
-                        <p><strong>Rated:</strong> {{movie.Rated}}</p>
-                        <p><strong>Released:</strong> {{movie.Released}}</p>
-                        <p><strong>Runtime:</strong> {{movie.Runtime}}</p>
-                        <p><strong>Genre:</strong> {{movie.Genre}}</p>
-                        <p><strong>Director:</strong> {{movie.Director}}</p>
-                        <p><strong>Writer:</strong> {{movie.Writer}}</p>
-                        <p><strong>Actors:</strong> {{movie.Actors}}</p>
-                        <p><strong>Plot:</strong> {{movie.Plot}}</p>
-                        <p><strong>IMDb Rating:</strong> {{movie.imdbRating}}</p>
-                        <p><strong>Box Office:</strong> {{movie.BoxOffice}}</p>
-                        <p><strong>Production:</strong> {{movie.Production}}</p>
-                        <p><strong>Language:</strong> {{movie.Language}}</p>
-                        <p><strong>Country:</strong> {{movie.Country}}</p>
-                        <a href="/api/movies" class="btn btn-primary mt-3">Back to Movies</a>
+                        <h2 class="card-title fw-bold">{{movie.Title}}</h2>
+                        <p class="text-muted">{{movie.Genre}} | {{movie.Year}} | Rated {{movie.Rated}}</p>
+                        <hr>
+                        <p><strong><i class="fas fa-clock"></i> Runtime:</strong> {{movie.Runtime}}</p>
+                        <p><strong><i class="fas fa-user"></i> Director:</strong> {{movie.Director}}</p>
+                        <p><strong><i class="fas fa-pencil-alt"></i> Writer:</strong> {{movie.Writer}}</p>
+                        <p><strong><i class="fas fa-users"></i> Actors:</strong> {{movie.Actors}}</p>
+                        <p><strong><i class="fas fa-globe"></i> Language:</strong> {{movie.Language}}</p>
+                        <p><strong><i class="fas fa-flag"></i> Country:</strong> {{movie.Country}}</p>
+                        <p><strong><i class="fas fa-trophy"></i> Awards:</strong> {{movie.Awards}}</p>
+                        <p class="mt-4"><strong>Plot:</strong></p>
+                        <p class="text-justify">{{movie.Plot}}</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="mb-0"><strong>IMDb Rating:</strong> ⭐ {{movie.imdbRating}} / 10</p>
+                                <p><strong>Box Office:</strong> {{movie.BoxOffice}}</p>
+                            </div>
+                            <a href="/api/movies" class="btn btn-primary btn-lg rounded-pill shadow">
+                                <i class="fas fa-arrow-left"></i> Back to Movies
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <!-- FontAwesome Script -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

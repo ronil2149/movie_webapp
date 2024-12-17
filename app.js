@@ -19,6 +19,9 @@ var bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const flash = require('connect-flash');
+var Movie = require('./models/movie');
+const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
+const handlebars = require('handlebars');
 var port     = process.env.PORT || 8000;
 require('dotenv').config();
 
@@ -32,9 +35,9 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.engine(
     'hbs',
     exphbs.engine({
-        extname: '.hbs',
-        defaultLayout: 'main',
-        layoutsDir: 'views/layouts',
+        handlebars: allowInsecurePrototypeAccess(handlebars),
+        extname: 'hbs',
+        defaultLayout: 'main'
     })
 );
 app.set('view engine', 'hbs');
@@ -73,9 +76,8 @@ if (!process.env.MONGO_URI) {
     .then(() => console.log('MongoDB connected successfully'))
     .catch((err) => console.error('MongoDB connection error:', err));
   
-var Movie = require('./models/movie');
 
-// Get all movies
+
 // Get all movies
 app.get('/api/movies', (req, res) => {
     Movie.find().lean().exec((err, movies) => {
@@ -100,7 +102,6 @@ app.get('/api/movies/add', (req, res) => {
     res.render('addMovie', { title: 'Add Movie' });
 });
 
-// Create a new movie and return all movies after creation
 // Create a new movie and return all movies after creation
 app.post('/api/movies/add', (req, res) => {
     const movieData = {
@@ -137,19 +138,65 @@ app.post('/api/movies/add', (req, res) => {
 
 
 // Get a movie by _id
-app.get('/api/movies/:id', (req, res) => {
-    const id = req.params.id;
-    Movie.findById(id)
-        .lean()
-        .exec((err, movie) => {
-            if (err) {
-                console.error('Error finding movie:', err);
-                return res.status(500).send('Error finding movie.');
-            }
-            if (!movie) return res.status(404).send('Movie not found.');
-            res.render('movieDetails', { title: movie.Title, movie });
+app.get('/api/movies/:id', async (req, res) => {
+    try {
+        const id = mongoose.Types.ObjectId.isValid(req.params.id)
+            ? mongoose.Types.ObjectId(req.params.id)
+            : req.params.id;    
+
+            const movie = await Movie.findOne({
+                $or: [{ _id: id }, { Movie_ID: id }]
+            }).lean();
+
+        if (!movie) {
+            req.flash('error', 'Movie not found.');
+            return res.redirect('/api/movies');
+        }
+
+        res.render('movieDetails', { 
+            title: `${movie.Title} Details`, 
+            movie 
         });
+    } catch (err) {
+        console.error("Error fetching movie details:", err);
+        req.flash('error', 'Error fetching movie details.');
+        res.redirect('/api/movies');
+    }
 });
+
+
+// Search for movies by title
+app.get('/search', async (req, res) => {
+    try {
+        const query = req.query.query;
+
+        if (!query) {
+            req.flash('error', 'Please enter a search term.');
+            return res.redirect('/api/movies');
+        }
+
+        // Use a case-insensitive regex to match movie titles
+        const movies = await Movie.find({ 
+            Title: { $regex: query, $options: 'i' }
+        }).lean();
+
+        if (movies.length === 0) {
+            req.flash('error', `No movies found for "${query}"`);
+            return res.redirect('/api/movies');
+        }
+
+        res.render('movies', { 
+            title: `Search Results for "${query}"`, 
+            movies 
+        });
+    } catch (err) {
+        console.error('Error during search:', err);
+        req.flash('error', 'An error occurred while searching.');
+        res.redirect('/api/movies');
+    }
+});
+
+
 
 // Get a movie for editing by _id
 app.get('/api/movies/edit/:id', (req, res) => {
@@ -215,6 +262,7 @@ app.get('/api/movies/confirm-delete/:id', (req, res) => {
             res.render('confirmDelete', { title: `Delete ${movie.Title}`, movie });
         });
 });
+
 
 // Home page
 app.get('/', (req, res) => {
